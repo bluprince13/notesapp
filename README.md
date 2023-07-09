@@ -1,38 +1,40 @@
-# create-svelte
+# amazon-verified-permissions-demo
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+This is a demo of [Amazon Verified
+Permissions](https://docs.aws.amazon.com/verifiedpermissions/latest/userguide/what-is-avp.html)
+for fine-grained permissions management and authorization.
 
-## Creating a project
+Other technologies used:
 
-If you're seeing this, you've probably already done this step. Congrats!
+- Front-end
+  - [SvelteKit](https://kit.svelte.dev/) a UI framework
+  - [Skeleton](https://www.skeleton.dev/) which provides UI components
+- Infrastructure
+  - [SST](https://sst.dev) to build full stack apps on AWS
+  - [Amazon
+    Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html)
+    for Authentication
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Deploy to your AWS account
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+### Pre-requisites
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
+You need to have an AWS account and [AWS credentials configured locally](https://docs.sst.dev/advanced/iam-credentials#loading-from-a-file).
 
 ```bash
-npm run build
+# clone this repo
+git clone https://github.com/bluprince13/amazon-verified-permissions-demo.git
+cd amazon-verified-permissions-demo
+
+# install dependencies
+npm install
+
+# deploy and visit the url that is printed out at the end of the deployment
+npx sst deploy
 ```
 
-You can preview the production build with `npm run preview`.
+## Local development
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+```bash
+npx sst dev
+```
