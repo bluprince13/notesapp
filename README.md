@@ -45,16 +45,16 @@ export AWS_PROFILE=myawsprofile
 2. Create a `.env.local` file
 
    ```env
-   COGNITO_DOMAIN_PREFIX: <FILL WITH SOME PREFIX>-verified-permissions-demo
+   PUBLIC_COGNITO_DOMAIN_PREFIX: <FILL WITH SOME PREFIX>-verified-permissions-demo
    AWS_ACCOUNT_ID: <FILL WITH YOUR AWS_ACCOUNT_ID>
    ```
 
-   - Fill `COGNITO_DOMAIN_PREFIX` with your name. This will be used by Cognito to
+   - Fill `PUBLIC_COGNITO_DOMAIN_PREFIX` with your name. This will be used by Cognito to
      create a domain and this domain needs to be unique.
    - Fill `AWS_ACCOUNT_ID` of the account you plan to deploy to. This is used to
      make sure that you don't accidentally deploy this to another AWS account.
 
-1. Finally start the dev server
+3. Finally start the dev server
 
    ```bash
    npm run dev

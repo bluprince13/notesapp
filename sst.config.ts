@@ -50,14 +50,16 @@ export default {
 					domainPrefix: process.env.COGNITO_DOMAIN_PREFIX!
 				}
 			});
+			const cognitoDomain = `https://${process.env.COGNITO_DOMAIN_PREFIX}.auth.${REGION}.amazoncognito.com`;
 
 			const site = new SvelteKitSite(stack, 'site', {
 				environment: {
 					COGNITO_USER_POOL_ID: auth.userPoolId,
-					COGNITO_CLIENT_ID: auth.userPoolClientId,
+					PUBLIC_COGNITO_CLIENT_ID: auth.userPoolClientId,
 					COGNITO_CLIENT_SECRET: auth.cdk.userPoolClient.userPoolClientSecret.toString(),
+					PUBLIC_COGNITO_DOMAIN: cognitoDomain,
 					// https://authjs.dev/reference/core/errors/#missingsecret
-					AUTH_SECRET: crypto.randomBytes(32).toString("hex")
+					AUTH_SECRET: crypto.randomBytes(32).toString('hex')
 				}
 			});
 			stack.addOutputs({
@@ -65,7 +67,7 @@ export default {
 				UserPoolId: auth.userPoolId,
 				UserPoolClientId: auth.userPoolClientId,
 				UserPoolClientSecret: auth.cdk.userPoolClient.userPoolClientSecret.toString(),
-				CognitoDomain: `https://${process.env.COGNITO_DOMAIN_PREFIX}.auth.${REGION}.amazoncognito.com`
+				CognitoDomain: cognitoDomain
 			});
 		});
 	}
