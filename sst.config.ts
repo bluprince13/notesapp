@@ -37,7 +37,8 @@ export default {
 							flows: {
 								authorizationCodeGrant: true
 							},
-							callbackUrls: ['http://localhost:5173/auth/callback/cognito']
+							callbackUrls: ['http://localhost:5173/auth/callback/cognito'],
+							logoutUrls: ['http://localhost:5173/signout']
 						}
 					}
 				}

@@ -6,8 +6,22 @@
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
 	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
-	import { signIn, signOut } from '@auth/sveltekit/client';
+	import { signIn } from '@auth/sveltekit/client';
 	import { page } from '$app/stores';
+	import { PUBLIC_COGNITO_CLIENT_ID, PUBLIC_COGNITO_DOMAIN } from '$env/static/public';
+	const federatedSignOut = () => {
+		// signOut only signs out of Auth.js's session
+		// We need to log out of Cognito as well
+		// Federated signout is currently not supported.
+		// Therefore, we use a workaround: https://github.com/nextauthjs/next-auth/issues/836#issuecomment-1007630849
+		const signoutRedirectUrl = 'http://localhost:5173/signout';
+		// https://docs.aws.amazon.com/cognito/latest/developerguide/logout-endpoint.html
+		window.location.replace(
+			`${PUBLIC_COGNITO_DOMAIN}/logout?client_id=${PUBLIC_COGNITO_CLIENT_ID}&logout_uri=${encodeURIComponent(
+				signoutRedirectUrl
+			)}`
+		);
+	};
 </script>
 
 <!-- App Shell -->
@@ -25,9 +39,7 @@
 				{#if $page.data.session}
 					<div>
 						Hello {$page.data.session.user?.email}
-						<button on:click|preventDefault={signOut} class="btn variant-filled-surface"
-							>Sign out</button
-						>
+						<button on:click={federatedSignOut} class="btn variant-filled-surface">Sign out</button>
 					</div>
 				{:else}
 					<button class="btn variant-filled-surface" on:click={() => signIn('cognito')}
