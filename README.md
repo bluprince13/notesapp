@@ -45,27 +45,16 @@ export AWS_PROFILE=myawsprofile
 2. Create a `.env.local` file
 
    ```env
-   COGNITO_USER_POOL_ID: <REPLACE WITH OUTPUT FROM SST DEV>
-   COGNITO_CLIENT_ID: <REPLACE WITH OUTPUT FROM SST DEV>
-   COGNITO_CLIENT_SECRET: <REPLACE WITH OUTPUT FROM SST DEV>
    COGNITO_DOMAIN_PREFIX: <FILL WITH SOME PREFIX>-verified-permissions-demo
    AWS_ACCOUNT_ID: <FILL WITH YOUR AWS_ACCOUNT_ID>
-   AUTH_SECRET: <MIN 32 CHAR RANDOM STRING>
    ```
-
-   - Replace placeholders with the `UserPoolId`, `UserPoolClientId` and
-     `UserPoolClientSecret` obtained from the `sst dev` command.
 
    - Fill `COGNITO_DOMAIN_PREFIX` with your name. This will be used by Cognito to
      create a domain and this domain needs to be unique.
    - Fill `AWS_ACCOUNT_ID` of the account you plan to deploy to. This is used to
-   - make sure that you don't accidentally deploy this to another AWS account.
-   - Set the `AUTH_SECRET` environment variable. This should be a minimum of 32
-     characters, random string. On UNIX systems you can use openssl rand -hex 32
-     or check out https://generate-secret.vercel.app/32. Without this you'll get
-     an [error](https://authjs.dev/reference/core/errors/#missingsecret).
+     make sure that you don't accidentally deploy this to another AWS account.
 
-3. Finally start the dev server
+1. Finally start the dev server
 
    ```bash
    npm run dev

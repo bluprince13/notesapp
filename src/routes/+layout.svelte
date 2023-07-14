@@ -30,7 +30,9 @@
 						>
 					</div>
 				{:else}
-					<button class="btn variant-filled-surface" on:click={signIn}>Sign In</button>
+					<button class="btn variant-filled-surface" on:click={() => signIn('cognito')}
+						>Sign In</button
+					>
 				{/if}
 			</svelte:fragment>
 		</AppBar>

@@ -1,5 +1,6 @@
 import type { SSTConfig } from 'sst';
 import { Cognito, SvelteKitSite } from 'sst/constructs';
+import crypto from 'crypto';
 
 const REGION = 'us-east-1';
 const deletionProtection = false;
@@ -50,7 +51,15 @@ export default {
 				}
 			});
 
-			const site = new SvelteKitSite(stack, 'site');
+			const site = new SvelteKitSite(stack, 'site', {
+				environment: {
+					COGNITO_USER_POOL_ID: auth.userPoolId,
+					COGNITO_CLIENT_ID: auth.userPoolClientId,
+					COGNITO_CLIENT_SECRET: auth.cdk.userPoolClient.userPoolClientSecret.toString(),
+					// https://authjs.dev/reference/core/errors/#missingsecret
+					AUTH_SECRET: crypto.randomBytes(32).toString("hex")
+				}
+			});
 			stack.addOutputs({
 				url: site.url,
 				UserPoolId: auth.userPoolId,
