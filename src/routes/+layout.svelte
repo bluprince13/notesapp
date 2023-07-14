@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	// The ordering of these imports is critical to your app working properly
 	import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
 	// If you have source.organizeImports set to true in VSCode, then it will auto change this ordering
@@ -6,6 +6,8 @@
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
 	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
+	import { signIn, signOut } from '@auth/sveltekit/client';
+	import { page } from '$app/stores';
 </script>
 
 <!-- App Shell -->
@@ -14,33 +16,22 @@
 		<!-- App Bar -->
 		<AppBar>
 			<svelte:fragment slot="lead">
-				<strong class="text-xl uppercase">Skeleton</strong>
+				<strong class="text-xl uppercase">
+					<a href="/"> Amazon Verified Permissions Demo</a>
+				</strong>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
-				<a
-					class="btn btn-sm variant-ghost-surface"
-					href="https://discord.gg/EXqV7W8MtY"
-					target="_blank"
-					rel="noreferrer"
-				>
-					Discord
-				</a>
-				<a
-					class="btn btn-sm variant-ghost-surface"
-					href="https://twitter.com/SkeletonUI"
-					target="_blank"
-					rel="noreferrer"
-				>
-					Twitter
-				</a>
-				<a
-					class="btn btn-sm variant-ghost-surface"
-					href="https://github.com/skeletonlabs/skeleton"
-					target="_blank"
-					rel="noreferrer"
-				>
-					GitHub
-				</a>
+				<!-- https://authjs.dev/reference/sveltekit -->
+				{#if $page.data.session}
+					<div>
+						Hello {$page.data.session.user?.email}
+						<button on:click|preventDefault={signOut} class="btn variant-filled-surface"
+							>Sign out</button
+						>
+					</div>
+				{:else}
+					<button class="btn variant-filled-surface" on:click={signIn}>Sign In</button>
+				{/if}
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
