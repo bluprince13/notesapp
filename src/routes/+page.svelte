@@ -24,7 +24,6 @@
 	figure {
 		@apply flex relative flex-col;
 	}
-	figure svg,
 	.img-bg {
 		@apply w-64 h-64 md:w-80 md:h-80;
 	}
