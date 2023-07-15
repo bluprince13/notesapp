@@ -17,6 +17,8 @@
   "devDependencies": {
     "@auth/core": "^0.9.0",
     "@auth/sveltekit": "^0.3.3",
+    "@aws-sdk/client-dynamodb": "^3.370.0",
+    "@aws-sdk/lib-dynamodb": "^3.370.0",
     "@floating-ui/dom": "^1.4.4",
     "@skeletonlabs/skeleton": "^1.9.0",
     "@sveltejs/adapter-auto": "^2.0.0",
