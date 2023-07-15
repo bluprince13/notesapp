@@ -29,6 +29,7 @@ export function AuthNStack({ stack }: StackContext) {
 	const userPool = auth.cdk.userPool;
 	userPool.addDomain('CognitoDomain', {
 		cognitoDomain: {
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			domainPrefix: process.env.COGNITO_DOMAIN_PREFIX!
 		}
 	});
