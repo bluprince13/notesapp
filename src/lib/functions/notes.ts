@@ -2,16 +2,16 @@ import * as uuid from 'uuid';
 import { Table } from 'sst/node/table';
 import {
 	DeleteCommand,
-	DeleteCommandInput,
+	type DeleteCommandInput,
 	DynamoDBDocumentClient,
 	GetCommand,
-	GetCommandInput,
+	type GetCommandInput,
 	PutCommand,
-	PutCommandInput,
+	type PutCommandInput,
 	ScanCommand,
-	ScanCommandInput,
+	type ScanCommandInput,
 	UpdateCommand,
-	UpdateCommandInput
+	type UpdateCommandInput
 } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
@@ -22,12 +22,17 @@ const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 const tableName = Table.Notes.tableName;
 
+interface Event {
+	body?: string;
+	pathParameters?: { id: string };
+}
+
 // generic handler to wrap around lambda functions
 export default function handler(lambda) {
-	return async function (event, context) {
+	return async function (event: Event) {
 		let body, statusCode;
 		try {
-			body = await lambda(event, context);
+			body = await lambda(event);
 			statusCode = 200;
 		} catch (e) {
 			console.error(e);
@@ -36,13 +41,13 @@ export default function handler(lambda) {
 		}
 		return {
 			statusCode,
-			body: JSON.stringify(body)
+			body
 		};
 	};
 }
 
-export const create = handler(async (event) => {
-	const data = JSON.parse(event.body);
+export const create = handler(async (event: Event) => {
+	const data = JSON.parse(event.body!);
 	const input = {
 		TableName: tableName,
 		Item: {
@@ -57,11 +62,11 @@ export const create = handler(async (event) => {
 	return input.Item;
 });
 
-export const get = handler(async (event) => {
+export const get = handler(async (event: Event) => {
 	const input = {
 		TableName: tableName,
 		Key: {
-			noteId: event.pathParameters.id
+			noteId: event.pathParameters?.id
 		}
 	} as GetCommandInput;
 
@@ -70,7 +75,7 @@ export const get = handler(async (event) => {
 	return result.Item;
 });
 
-export const list = handler(async (event) => {
+export const list = handler(async (_event: Event) => {
 	const input = {
 		TableName: tableName
 	} as ScanCommandInput;
@@ -80,12 +85,13 @@ export const list = handler(async (event) => {
 	return result.Items;
 });
 
-export const update = handler(async (event) => {
-	const data = JSON.parse(event.body);
+export const update = handler(async (event: Event) => {
+	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+	const data = JSON.parse(event.body!);
 	const input = {
 		TableName: tableName,
 		Key: {
-			noteId: event.pathParameters.id
+			noteId: event.pathParameters?.id
 		},
 		UpdateExpression: 'set content = :content, updatedAt = :updatedAt',
 		ExpressionAttributeValues: {
@@ -99,11 +105,11 @@ export const update = handler(async (event) => {
 	return result.Attributes;
 });
 
-export const del = handler(async (event) => {
+export const del = handler(async (event: Event) => {
 	const input = {
 		TableName: tableName,
 		Key: {
-			noteId: event.pathParameters.id
+			noteId: event.pathParameters?.id
 		}
 	} as DeleteCommandInput;
 
