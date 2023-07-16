@@ -5,7 +5,7 @@
 	import '@skeletonlabs/skeleton/styles/skeleton.css';
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
-	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
+	import { AppShell, AppBar, Modal } from '@skeletonlabs/skeleton';
 	import { signIn } from '@auth/sveltekit/client';
 	import { page } from '$app/stores';
 	import { PUBLIC_COGNITO_CLIENT_ID, PUBLIC_COGNITO_DOMAIN } from '$env/static/public';
@@ -24,6 +24,8 @@
 	};
 </script>
 
+<!-- https://www.skeleton.dev/utilities/modals -->
+<Modal />
 <!-- App Shell -->
 <AppShell>
 	<svelte:fragment slot="header">
