@@ -39,8 +39,8 @@
 			<svelte:fragment slot="trail">
 				<!-- https://authjs.dev/reference/sveltekit -->
 				{#if $page.data.session}
-					<div>
-						Hello {$page.data.session.user?.email}
+					<div class="space-x-2">
+						<span>Hello {$page.data.session.user?.email}</span>
 						<button on:click={federatedSignOut} class="btn variant-filled-surface">Sign out</button>
 					</div>
 				{:else}

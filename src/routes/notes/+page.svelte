@@ -39,11 +39,11 @@
 </script>
 
 <div>
-	<button class="btn variant-filled-surface my-5" on:click={onAdd}>Add note</button>
-	<ul class="list">
+	<button class="btn variant-filled-surface mb-5" on:click={onAdd}>Add note</button>
+	<ul class="list space-y-2">
 		{#each notes as note}
 			<li>
-				<div class="card p-4 flex-auto flex flex-row space-x-2">
+				<div class="card p-4 flex-auto flex flex-row space-x-4">
 					<div class="flex-grow whitespace-pre-line space-y-2">
 						<div>
 							{note.content}
@@ -55,13 +55,13 @@
 					<button
 						type="button"
 						class="btn-icon variant-filled btn-sm
-				self-center"
+				self-center shrink-0"
 						on:click={() => onEdit(note.noteId, note.content)}><FaEdit /></button
 					>
 					<button
 						type="button"
 						class="btn-icon variant-filled btn-sm
-				self-center"
+				self-center shrink-0"
 						on:click={() => onDelete(note.noteId)}><FaTrash /></button
 					>
 				</div>
