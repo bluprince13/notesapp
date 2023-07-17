@@ -3,14 +3,23 @@
 	import { invalidateAll } from '$app/navigation';
 	import { modalStore } from '@skeletonlabs/skeleton';
 	export let parent: any;
+	export let noteId: string;
+	export let existingContent: string;
 
-	let content = '';
+	let content = existingContent || '';
 	const onFormSubmit = async () => {
 		try {
-			await fetch('/api/notes', {
-				method: 'POST',
-				body: JSON.stringify({ content })
-			});
+			if (noteId) {
+				await fetch(`/api/notes/${noteId}`, {
+					method: 'PUT',
+					body: JSON.stringify({ content })
+				});
+			} else {
+				await fetch('/api/notes', {
+					method: 'POST',
+					body: JSON.stringify({ content })
+				});
+			}
 			modalStore.close();
 			invalidateAll();
 		} catch (e) {
@@ -21,7 +30,7 @@
 
 {#if $modalStore[0]}
 	<div class="card p-4 w-modal shadow-xl space-y-4">
-		<header class="text-2xl font-bold">New note</header>
+		<header class="text-2xl font-bold">{noteId ? 'Edit' : 'Create'} note</header>
 		<form class="modal-form" on:submit|preventDefault={onFormSubmit}>
 			<textarea
 				class="textarea"
@@ -33,7 +42,7 @@
 				<button class="btn {parent.buttonNeutral}" on:click|preventDefault={parent.onClose}
 					>{parent.buttonTextCancel}</button
 				>
-				<button class="btn {parent.buttonPositive}" type="submit">Add</button>
+				<button class="btn {parent.buttonPositive}" type="submit">Submit</button>
 			</footer>
 		</form>
 	</div>
