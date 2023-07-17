@@ -14,6 +14,7 @@ import {
 	type UpdateCommandInput
 } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import _ from 'lodash';
 
 const client = new DynamoDBClient({});
 // The DynamoDB document client simplifies working with items by abstracting the notion of attribute values.
@@ -23,7 +24,7 @@ const docClient = DynamoDBDocumentClient.from(client);
 const tableName = Table.Notes.tableName;
 
 interface Data {
-	id?: string;
+	noteId?: string;
 	content?: string;
 }
 
@@ -65,7 +66,7 @@ export const get = handler(async (data: Data) => {
 	const input = {
 		TableName: tableName,
 		Key: {
-			noteId: data.id
+			noteId: data.noteId
 		}
 	} as GetCommandInput;
 
@@ -81,14 +82,14 @@ export const list = handler(async (_data: Data) => {
 
 	const command = new ScanCommand(input);
 	const result = await docClient.send(command);
-	return result.Items;
+	return _.orderBy(result.Items, ['createdAt'], 'desc');
 });
 
 export const update = handler(async (data: Data) => {
 	const input = {
 		TableName: tableName,
 		Key: {
-			noteId: data.id
+			noteId: data.noteId
 		},
 		UpdateExpression: 'set content = :content, updatedAt = :updatedAt',
 		ExpressionAttributeValues: {
@@ -106,7 +107,7 @@ export const del = handler(async (data: Data) => {
 	const input = {
 		TableName: tableName,
 		Key: {
-			noteId: data.id
+			noteId: data.noteId
 		}
 	} as DeleteCommandInput;
 
