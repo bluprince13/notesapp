@@ -1,0 +1,71 @@
+{
+    "NotesApp": {
+        "actions": {
+            "ReadNote": {
+                "appliesTo": {
+                    "principalTypes": [
+                        "User"
+                    ],
+                    "resourceTypes": [
+                        "Note"
+                    ]
+                }
+            },
+            "DeleteNote": {
+                "appliesTo": {
+                    "principalTypes": [
+                        "User"
+                    ],
+                    "resourceTypes": [
+                        "Note"
+                    ]
+                }
+            },
+            "CreateNote": {
+                "appliesTo": {
+                    "principalTypes": [
+                        "User"
+                    ],
+                    "resourceTypes": [
+                        "Note"
+                    ]
+                }
+            },
+            "UpdateNote": {
+                "appliesTo": {
+                    "resourceTypes": [
+                        "Note"
+                    ],
+                    "principalTypes": [
+                        "User"
+                    ]
+                }
+            }
+        },
+        "entityTypes": {
+            "User": {
+                "shape": {
+                    "type": "Record",
+                    "attributes": {}
+                }
+            },
+            "Note": {
+                "shape": {
+                    "attributes": {
+                        "noteId": {
+                            "type": "String"
+                        },
+                        "content": {
+                            "type": "String"
+                        },
+                        "owner": {
+                            "name": "User",
+                            "type": "Entity"
+                        }
+                    },
+                    "type": "Record"
+                }
+            }
+        }
+    }
+}

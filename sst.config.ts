@@ -3,6 +3,7 @@ import { AuthNStack } from './infrastructure/stacks/authn';
 import { SiteStack } from './infrastructure/stacks/app';
 import { REGION } from './infrastructure/constants';
 import { StorageStack } from './infrastructure/stacks/storage';
+import { AuthZStack } from './infrastructure/stacks/authz/authz';
 
 export default {
 	config(_input) {
@@ -21,6 +22,6 @@ export default {
 			app.setDefaultRemovalPolicy('destroy');
 		}
 
-		app.stack(AuthNStack).stack(StorageStack).stack(SiteStack);
+		app.stack(AuthNStack).stack(AuthZStack).stack(StorageStack).stack(SiteStack);
 	}
 } satisfies SSTConfig;
