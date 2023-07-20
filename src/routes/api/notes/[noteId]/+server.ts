@@ -1,4 +1,4 @@
-import { del, update } from '$lib/functions/notes';
+import { del, update } from '$lib/clients/db';
 import { json } from '@sveltejs/kit';
 
 // https://learn.svelte.dev/tutorial/post-handlers

@@ -14,14 +14,16 @@ import {
 	type UpdateCommandInput
 } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+
 import _ from 'lodash';
 
-const client = new DynamoDBClient({});
+const dDBClient = new DynamoDBClient({});
 // The DynamoDB document client simplifies working with items by abstracting the notion of attribute values.
 // https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/Package/-aws-sdk-lib-dynamodb/Class/DynamoDBDocumentClient/
 // https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/dynamodb-example-document-client.html
-const docClient = DynamoDBDocumentClient.from(client);
+const docClient = DynamoDBDocumentClient.from(dDBClient);
 const tableName = Table.Notes.tableName;
+
 
 interface Data {
 	noteId?: string;

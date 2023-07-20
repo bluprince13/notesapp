@@ -1,4 +1,4 @@
-import { list } from '$lib/functions/notes';
+import { list } from '$lib/clients/db';
 
 export async function load() {
 	const result = await list({});
