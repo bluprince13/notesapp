@@ -3,7 +3,6 @@ import { createEditorPolicy } from '$lib/clients/verifiedPermissions';
 import { json } from '@sveltejs/kit';
 
 // https://learn.svelte.dev/tutorial/post-handlers
-/** @type {import('./$types').RequestHandler} */
 export async function POST({ request, locals }) {
 	const { content } = await request.json();
 	const session = await locals.getSession();
