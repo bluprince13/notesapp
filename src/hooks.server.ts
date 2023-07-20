@@ -14,5 +14,11 @@ export const handle = SvelteKitAuth({
 			clientSecret: COGNITO_CLIENT_SECRET,
 			issuer: `https://cognito-idp.us-east-1.amazonaws.com/${COGNITO_USER_POOL_ID}`
 		})
-	]
+	],
+	callbacks: {
+		async session({ session, token }) {
+			session.user && (session.user.sub = token.sub);
+			return session;
+		}
+	}
 }) satisfies Handle;
