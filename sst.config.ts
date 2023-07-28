@@ -13,7 +13,7 @@ export default {
 		};
 	},
 	stacks(app) {
-		if (app.account !== process.env.AWS_ACCOUNT_ID) {
+		if (process.env.AWS_ACCOUNT_ID && app.account !== process.env.AWS_ACCOUNT_ID) {
 			throw new Error(
 				`AWS_ACCOUNT_ID set in env was ${process.env.AWS_ACCOUNT_ID} but AWS cli is using ${app.account}`
 			);
