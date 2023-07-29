@@ -18,7 +18,16 @@ export const handle = SvelteKitAuth({
 	callbacks: {
 		async session({ session, token }) {
 			session.user && (session.user.sub = token.sub);
+			session.access_token = token.access_token as string;
+			session.id_token = token.id_token as string;
 			return session;
+		},
+		async jwt({ token, account }) {
+			if (account) {
+				token.access_token = account.access_token;
+				token.id_token = account.id_token;
+			}
+			return token;
 		}
 	}
 }) satisfies Handle;
