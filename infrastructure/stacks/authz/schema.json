@@ -51,18 +51,7 @@
             },
             "Note": {
                 "shape": {
-                    "attributes": {
-                        "noteId": {
-                            "type": "String"
-                        },
-                        "content": {
-                            "type": "String"
-                        },
-                        "owner": {
-                            "name": "User",
-                            "type": "Entity"
-                        }
-                    },
+                    "attributes": {},
                     "type": "Record"
                 }
             }

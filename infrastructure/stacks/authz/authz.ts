@@ -23,6 +23,7 @@ export function AuthZStack({ stack }: StackContext) {
 				userPoolArn: auth.cdk.userPool.userPoolArn
 			}
 		},
+		principalEntityType: 'NotesApp::User',
 		policyStoreId: cfnPolicyStore.attrPolicyStoreId
 	});
 
