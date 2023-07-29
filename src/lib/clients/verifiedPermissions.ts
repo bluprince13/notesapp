@@ -1,43 +1,34 @@
 import {
 	VerifiedPermissionsClient,
 	CreatePolicyCommand,
-	type CreatePolicyCommandInput
+	type CreatePolicyCommandInput,
+	type IsAuthorizedWithTokenCommandInput,
+	IsAuthorizedWithTokenCommand,
+	Decision
 } from '@aws-sdk/client-verifiedpermissions';
 import {
 	VERIFIED_PERMISSIONS_POLICY_STORE_ID,
-	VERIFIED_PERMISSIONS_NOTE_EDITOR_TEMPLATE_ID
+	VERIFIED_PERMISSIONS_NOTE_EDITOR_TEMPLATE_ID,
+	COGNITO_USER_POOL_ID
 } from '$env/static/private';
 
 const verifiedPermissionsClient = new VerifiedPermissionsClient({});
 
-interface Data {
+interface CreateEditorPolicyInput {
 	noteId?: string;
 	userId?: string;
+}
+
+interface IsAuthorizedWithTokenInput {
+	noteId?: string;
+	access_token?: string;
 }
 
 const ENTITY_USER = 'NotesApp::User';
 const ENTITY_NOTE = 'NotesApp::Note';
 
-// generic handler to wrap around lambda functions
-export default function handler(lambda) {
-	return async function (data: Data) {
-		let body, statusCode;
-		try {
-			body = await lambda(data);
-			statusCode = 200;
-		} catch (e) {
-			console.error(e);
-			body = { error: e.message };
-			statusCode = 500;
-		}
-		return {
-			statusCode,
-			body
-		};
-	};
-}
-
-export const createEditorPolicy = handler(async (data: Data) => {
+// https://docs.aws.amazon.com/verifiedpermissions/latest/apireference/API_CreatePolicy.html
+export const createEditorPolicy = async (data: CreateEditorPolicyInput) => {
 	const input = {
 		clientToken: data.noteId,
 		policyStoreId: VERIFIED_PERMISSIONS_POLICY_STORE_ID,
@@ -46,7 +37,8 @@ export const createEditorPolicy = handler(async (data: Data) => {
 				policyTemplateId: VERIFIED_PERMISSIONS_NOTE_EDITOR_TEMPLATE_ID,
 				principal: {
 					entityType: ENTITY_USER,
-					entityId: data.userId
+					// https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-authorization-with-avp.html
+					entityId: `${COGNITO_USER_POOL_ID}|${data.userId}`
 				},
 				resource: {
 					entityType: ENTITY_NOTE,
@@ -55,8 +47,25 @@ export const createEditorPolicy = handler(async (data: Data) => {
 			}
 		}
 	} as CreatePolicyCommandInput;
-
 	const command = new CreatePolicyCommand(input);
 	await verifiedPermissionsClient.send(command);
-	return {};
-});
+};
+
+// https://docs.aws.amazon.com/verifiedpermissions/latest/apireference/API_IsAuthorizedWithToken.html
+export const isAuthorizedWithToken = async (data: IsAuthorizedWithTokenInput) => {
+	const input = {
+		policyStoreId: VERIFIED_PERMISSIONS_POLICY_STORE_ID,
+		resource: {
+			entityType: ENTITY_NOTE,
+			entityId: data.noteId
+		},
+		action: {
+			actionId: 'ReadNote',
+			actionType: 'NotesApp::Action'
+		},
+		accessToken: data.access_token
+	} as IsAuthorizedWithTokenCommandInput;
+	const command = new IsAuthorizedWithTokenCommand(input);
+	const result = await verifiedPermissionsClient.send(command);
+	return result.decision === Decision.ALLOW;
+};

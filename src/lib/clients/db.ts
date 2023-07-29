@@ -24,10 +24,16 @@ const dDBClient = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(dDBClient);
 const tableName = Table.Notes.tableName;
 
-
 interface Data {
 	noteId?: string;
 	content?: string;
+}
+
+export interface Note {
+	noteId?: string;
+	content?: string;
+	createdAt?: number;
+	updatedAt?: number;
 }
 
 // generic handler to wrap around lambda functions
