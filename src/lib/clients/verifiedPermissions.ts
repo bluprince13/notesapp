@@ -11,12 +11,14 @@ import {
 	VERIFIED_PERMISSIONS_NOTE_EDITOR_TEMPLATE_ID,
 	COGNITO_USER_POOL_ID
 } from '$env/static/private';
+import { retry } from '@lifeomic/attempt';
 
 const verifiedPermissionsClient = new VerifiedPermissionsClient({});
 
 interface CreateEditorPolicyInput {
 	noteId?: string;
 	userId?: string;
+	access_token?: string;
 }
 
 interface IsAuthorizedWithTokenInput {
@@ -49,6 +51,17 @@ export const createEditorPolicy = async (data: CreateEditorPolicyInput) => {
 	} as CreatePolicyCommandInput;
 	const command = new CreatePolicyCommand(input);
 	await verifiedPermissionsClient.send(command);
+
+	// Policy updates are eventually consistent. Therfore, we need to retry
+	// isAuthorizedWithToken until it returns true
+	await retryFunction({
+		functionToRetry: async () =>
+			await isAuthorizedWithToken({
+				...data,
+				access_token: data.access_token
+			}),
+		expectedValue: true
+	});
 };
 
 // https://docs.aws.amazon.com/verifiedpermissions/latest/apireference/API_IsAuthorizedWithToken.html
@@ -68,4 +81,34 @@ export const isAuthorizedWithToken = async (data: IsAuthorizedWithTokenInput) =>
 	const command = new IsAuthorizedWithTokenCommand(input);
 	const result = await verifiedPermissionsClient.send(command);
 	return result.decision === Decision.ALLOW;
+};
+
+const retryFunction = async ({
+	functionToRetry,
+	expectedValue
+}: {
+	functionToRetry: Function;
+	expectedValue?: any;
+}) => {
+	try {
+		return await retry(
+			async (context) => {
+				const result = await functionToRetry();
+				if (expectedValue ? result !== expectedValue : !result) {
+					throw new Error(
+						`Expected ${expectedValue}, but received ${result} at attempt ${context.attemptNum}`
+					);
+				}
+				return result;
+			},
+			{
+				delay: 200,
+				maxAttempts: 5,
+				maxDelay: 2000,
+				factor: 2
+			}
+		);
+	} catch (e) {
+		console.error(e);
+	}
 };
