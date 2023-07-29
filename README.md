@@ -15,6 +15,8 @@ Other technologies used:
     Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html)
     for Authentication
 
+![](https://github.com/bluprince13/amazon-verified-permissions-demo/blob/main/static/demo.gif?raw=true)
+
 ## Deploy to your AWS account
 
 ### Pre-requisites
