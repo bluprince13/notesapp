@@ -33,7 +33,7 @@
 		<AppBar>
 			<svelte:fragment slot="lead">
 				<strong class="text-xl uppercase">
-					<a href="/"> Amazon Verified Permissions Demo</a>
+					<a href="/">Notes App</a>
 				</strong>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">

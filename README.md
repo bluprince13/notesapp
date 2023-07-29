@@ -1,23 +1,30 @@
-# amazon-verified-permissions-demo
+# notesapp
 
-This is a demo of [Amazon Verified
-Permissions](https://docs.aws.amazon.com/verifiedpermissions/latest/userguide/what-is-avp.html)
-for fine-grained permissions management and authorization.
+This is a full-stack app made with :heart: using some really cool technologies.
+The purpose is to just learn/demo how these technologies may be used.
 
-Other technologies used:
+Technologies used:
 
 - Front-end
   - [SvelteKit](https://kit.svelte.dev/) a UI framework
   - [Skeleton](https://www.skeleton.dev/) which provides UI components
+  - [tailwindcss](https://tailwindcss.com/) a CSS framework that provides
+    classes for styling
 - Infrastructure
-  - [SST](https://sst.dev) to build full stack apps on AWS
+  - [SST](https://sst.dev) to build full stack apps on AWS, a nice layer on top
+    of [AWS Cloud Development Kit [CDK]](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html)
   - [Amazon
     Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html)
-    for Authentication
+    for authentication
+  - [Amazon Verified
+    Permissions](https://docs.aws.amazon.com/verifiedpermissions/latest/userguide/what-is-avp.html)
+    for fine-grained permissions management and authorization
 
-![](https://github.com/bluprince13/amazon-verified-permissions-demo/blob/main/static/demo.gif?raw=true)
+![](https://github.com/bluprince13/notesapp/blob/main/static/demo.gif?raw=true)
 
 ## Deploy to your AWS account
+
+Note that deploying to AWS means that you might be charged for AWS resources.
 
 ### Pre-requisites
 
@@ -25,7 +32,7 @@ You need to have an AWS account and [AWS credentials configured
 locally](https://docs.sst.dev/advanced/iam-credentials#loading-from-a-file).
 
 ```bash
-export AWS_PROFILE=myawsprofile
+export AWS_PROFILE=<FILL WITH YOUR AWS PROFILE>
 ```
 
 ### Instructions
@@ -34,20 +41,19 @@ export AWS_PROFILE=myawsprofile
 
    ```bash
    # clone this repo
-   git clone https://github.com/bluprince13/amazon-verified-permissions-demo.git
-   cd amazon-verified-permissions-demo
+   git clone https://github.com/bluprince13/notesapp.git
+   cd notesapp
 
    # install dependencies
    npm install
 
-   # copy the outputs from the following command
    npx sst dev
    ```
 
 2. Create a `.env.local` file
 
    ```env
-   PUBLIC_COGNITO_DOMAIN_PREFIX: <FILL WITH SOME PREFIX>-verified-permissions-demo
+   PUBLIC_COGNITO_DOMAIN_PREFIX: <FILL WITH SOME PREFIX>-notesapp
    AWS_ACCOUNT_ID: <FILL WITH YOUR AWS_ACCOUNT_ID>
    ```
 
@@ -63,6 +69,8 @@ export AWS_PROFILE=myawsprofile
    ```
 
 ### Destroy
+
+When you're finished, make sure to remove the stacks.
 
 ```bash
 npx sst remove

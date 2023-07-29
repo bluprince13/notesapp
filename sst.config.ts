@@ -8,7 +8,7 @@ import { AuthZStack } from './infrastructure/stacks/authz/authz';
 export default {
 	config(_input) {
 		return {
-			name: 'vipin-verified-permissions-demo',
+			name: 'notesapp',
 			region: REGION
 		};
 	},
