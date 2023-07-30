@@ -75,3 +75,7 @@ When you're finished, make sure to remove the stacks.
 ```bash
 npx sst remove
 ```
+
+## Infrastructure diagram
+
+![](assets/../static/notesapp.drawio.svg)
