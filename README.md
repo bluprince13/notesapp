@@ -3,10 +3,18 @@
 This is a full-stack app made with :heart: using some really cool technologies.
 The purpose is to just learn/demo how these technologies may be used.
 
+> **Warning**<br>
+> There are some [production blocking issues](https://github.com/bluprince13/notesapp/labels/blocks_production)
+> that I have not sorted out yet
+> and I wouldn't choose some of the technologies below if I were making a production
+> grade app today. However, I think they have a lot of potential.
+
 Technologies used:
 
-- Front-end
+- Fullstack
   - [SvelteKit](https://kit.svelte.dev/) a UI framework
+  - [Auth.js](https://authjs.dev/) authentication solution that integrates with various identity providers
+- Front-end
   - [Skeleton](https://www.skeleton.dev/) which provides UI components
   - [tailwindcss](https://tailwindcss.com/) a CSS framework that provides
     classes for styling
@@ -47,6 +55,7 @@ export AWS_PROFILE=<FILL WITH YOUR AWS PROFILE>
    # install dependencies
    npm install
 
+   # deploy resources to AWS and start sst local dev environment
    npx sst dev
    ```
 
