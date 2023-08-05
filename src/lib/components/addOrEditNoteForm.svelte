@@ -4,7 +4,7 @@
 	import { modalStore } from '@skeletonlabs/skeleton';
 	export let parent: any;
 	export let noteId: string;
-	export let existingContent: string;
+	export let existingContent: string | undefined = undefined;
 
 	let content = existingContent || '';
 	const onFormSubmit = async () => {
