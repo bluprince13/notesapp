@@ -4,9 +4,12 @@
 	import FaTrash from '~icons/fa/trash';
 	import FaEdit from '~icons/fa/edit';
 	import { notes } from '$lib/stores';
+	import { confetti } from '@neoconfetti/svelte';
 
 	export let data;
 	$: notes.set(data.notes);
+
+	$: isConfettiVisible = $notes.length === 1 ? true : false;
 
 	const onAdd = async () => {
 		// https://www.skeleton.dev/utilities/modals
@@ -41,6 +44,12 @@
 </script>
 
 <div>
+	{#if isConfettiVisible}
+		<div class="flex justify-center">
+			<!-- https://github.com/puruvj/neoconfetti/tree/main/packages/svelte -->
+			<div use:confetti />
+		</div>
+	{/if}
 	<button class="btn variant-filled-surface mb-5" on:click={onAdd}>Add note</button>
 	<ul class="list space-y-2">
 		{#each $notes as note}
