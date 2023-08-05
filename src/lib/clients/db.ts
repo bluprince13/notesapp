@@ -30,9 +30,9 @@ interface Data {
 }
 
 export interface Note {
-	noteId?: string;
-	content?: string;
-	createdAt?: number;
+	noteId: string;
+	content: string;
+	createdAt: number;
 	updatedAt?: number;
 }
 
@@ -103,7 +103,8 @@ export const update = handler(async (data: Data) => {
 		ExpressionAttributeValues: {
 			':content': data.content,
 			':updatedAt': Date.now()
-		}
+		},
+		ReturnValues: 'ALL_NEW'
 	} as UpdateCommandInput;
 
 	const command = new UpdateCommand(input);

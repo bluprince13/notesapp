@@ -1,6 +1,6 @@
 <!-- https://github.com/skeletonlabs/skeleton/blob/master/sites/skeleton.dev/src/lib/modals/examples/ModalExampleForm.svelte -->
 <script lang="ts">
-	import { invalidateAll } from '$app/navigation';
+	import { notes } from '$lib/stores';
 	import { modalStore } from '@skeletonlabs/skeleton';
 	export let parent: any;
 	export let noteId: string;
@@ -10,18 +10,27 @@
 	const onFormSubmit = async () => {
 		try {
 			if (noteId) {
-				await fetch(`/api/notes/${noteId}`, {
+				const response = await fetch(`/api/notes/${noteId}`, {
 					method: 'PUT',
 					body: JSON.stringify({ content })
 				});
+				const newNote = (await response.json()).body;
+				notes.update((notes) => {
+					const index = notes.findIndex((note) => note.noteId === noteId);
+					if (index !== -1) {
+						notes[index] = Object.assign({}, newNote);
+					}
+					return notes;
+				});
 			} else {
-				await fetch('/api/notes', {
+				const response = await fetch('/api/notes', {
 					method: 'POST',
 					body: JSON.stringify({ content })
 				});
+				const newNote = (await response.json()).body;
+				notes.update((notes) => [newNote, ...notes]);
 			}
 			modalStore.close();
-			invalidateAll();
 		} catch (e) {
 			console.error(e);
 		}

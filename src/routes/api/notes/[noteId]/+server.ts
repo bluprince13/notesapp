@@ -9,6 +9,6 @@ export async function DELETE({ params }) {
 
 export async function PUT({ params, request }) {
 	const { content } = await request.json();
-	await update({ noteId: params.noteId, content });
-	return json({}, { status: 201 });
+	const result = await update({ noteId: params.noteId, content });
+	return json(result, { status: 201 });
 }

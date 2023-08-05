@@ -3,7 +3,10 @@
 	import AddOrEditNoteForm from '$lib/components/addOrEditNoteForm.svelte';
 	import FaTrash from '~icons/fa/trash';
 	import FaEdit from '~icons/fa/edit';
-	import { invalidateAll } from '$app/navigation';
+	import { notes } from '$lib/stores';
+
+	export let data;
+	$: notes.set(data.notes);
 
 	const onAdd = async () => {
 		// https://www.skeleton.dev/utilities/modals
@@ -31,17 +34,16 @@
 		await fetch(`/api/notes/${noteId}`, {
 			method: 'DELETE'
 		});
-		invalidateAll();
+		notes.update((notes) => {
+			return notes.filter((note) => note.noteId !== noteId);
+		});
 	};
-
-	export let data;
-	$: notes = data.notes;
 </script>
 
 <div>
 	<button class="btn variant-filled-surface mb-5" on:click={onAdd}>Add note</button>
 	<ul class="list space-y-2">
-		{#each notes as note}
+		{#each $notes as note}
 			<li>
 				<div class="card p-4 flex-auto flex flex-row space-x-4">
 					<div class="flex-grow whitespace-pre-line space-y-2">
