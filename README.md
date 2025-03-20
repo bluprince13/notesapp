@@ -62,11 +62,11 @@ export AWS_PROFILE=<FILL WITH YOUR AWS PROFILE>
 2. Create a `.env.local` file
 
    ```env
-   PUBLIC_COGNITO_DOMAIN_PREFIX: <FILL WITH SOME PREFIX>-notesapp
+   COGNITO_DOMAIN_PREFIX: <FILL WITH SOME PREFIX>-notesapp
    AWS_ACCOUNT_ID: <FILL WITH YOUR AWS_ACCOUNT_ID>
    ```
 
-   - Fill `PUBLIC_COGNITO_DOMAIN_PREFIX` with your name. This will be used by Cognito to
+   - Fill `COGNITO_DOMAIN_PREFIX` with your name. This will be used by Cognito to
      create a domain and this domain needs to be unique.
    - Fill `AWS_ACCOUNT_ID` of the account you plan to deploy to. This is used to
      make sure that you don't accidentally deploy this to another AWS account.
